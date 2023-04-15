@@ -1,11 +1,60 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import Head from "next/head"
+import { useState } from "react"
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Input,
+  Spacer,
+  Text,
+  useToast,
+} from "@chakra-ui/react"
 
 export default function Home() {
+  // regular variables
+  const toast = useToast()
+
+  // useState
+  const [toastTitle, setToastTitle] = useState("Title")
+  const [toastMsg, setToastMsg] = useState("Message")
+  const [firstState, setFirstState] = useState("first State")
+  const [secondState, setSecondState] = useState("Click Me!")
+  const [customHeader, setCustomHeader] = useState("Welcome!")
+
+  // showToast is a function that draws a `Toast` on the screen when called
+  function showToast() {
+    toast({
+      title: toastTitle,
+      description: toastMsg,
+      status: "success",
+    })
+  }
+
+  function changeFirstState() {
+    if (firstState === "first State") {
+      setFirstState("second State")
+    } else {
+      setFirstState("first State")
+    }
+  }
+
+  function changeSecondState() {
+    if (secondState === "Click Me!") {
+      setSecondState("You Clicked!")
+    } else {
+      setSecondState("Click Me!")
+    }
+  }
+
+  function changeHeader() {
+    if (customHeader === "Welcome!") {
+      setCustomHeader("WoHo!")
+    } else {
+      setCustomHeader("Welcome!")
+    }
+  }
+
   return (
     <>
       <Head>
@@ -14,101 +63,121 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>src/pages/index.js</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+
+      {/* this is the Box (<div>) that defines the entire screen */}
+      <Box maxW="full" maxH="100vh" align="center">
+        {/* This is the Heading (<h1>) */}
+        <Heading pt="20">{customHeader}</Heading>
+
+        <Heading size="md" pt="10">
+          Toast Example
+        </Heading>
+        <Box
+          borderColor="green.100"
+          borderWidth="1px"
+          borderRadius="xl"
+          w="55%"
+          p="3"
+        >
+          {/* No input */}
+          <Flex>
+            <Spacer />
+            <Button colorScheme="purple" onClick={() => showToast()}>
+              Show Toast
+            </Button>
+          </Flex>
+
+          {/* Message input */}
+          <Flex pt="5">
+            <Input
+              borderColor="whatsapp.200"
+              placeholder="Write the text you want the toast to display"
+              onChange={(e) => setToastMsg(e.target.value)}
+            />
+            <Button colorScheme="whatsapp" onClick={() => showToast()}>
+              Show Toast
+            </Button>
+          </Flex>
+
+          {/* Title and Message inputs */}
+          <Flex pt="5">
+            <Input
+              borderColor="teal.200"
+              maxW="45%"
+              placeholder="Write the text you want the toast 'Title' to display"
+              onChange={(e) => setToastTitle(e.target.value)}
+            />
+            <Input
+              borderColor="purple.100"
+              maxW="45%"
+              placeholder="Write the text you want the toast 'Message' to display"
+              onChange={(e) => setToastMsg(e.target.value)}
+            />
+            <Button colorScheme="teal" onClick={() => showToast()}>
+              Show Toast
+            </Button>
+          </Flex>
+        </Box>
+
+        {/* Simple example of what useState can do */}
+        <Heading size="md" mt="5">
+          State Example
+        </Heading>
+        <Box
+          borderColor="blue.100"
+          borderWidth="1px"
+          borderRadius="xl"
+          w="55%"
+          p="3"
+        >
+          {/* Change state to update text and text color */}
+          <Flex align="center" justify="space-evenly">
+            <Flex
+              maxW="60%"
+              mt="20"
+              align={"center"}
+              justify={"space-between"}
+              flexDir={"column"}
             >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
+              <Text
+                textColor={
+                  firstState === "first State" ? "green.500" : "red.500"
+                }
+              >
+                {firstState}
+              </Text>
+              <Button onClick={changeFirstState}>Change State</Button>
+            </Flex>
 
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-        </div>
+            {/* Change state to update text on a button and color of the button */}
+            <Flex
+              maxW="60%"
+              mt="20"
+              align={"center"}
+              justify={"space-between"}
+              flexDir={"column"}
+            >
+              <Button
+                colorScheme={secondState === "Click Me!" ? "orange" : "cyan"}
+                onClick={changeSecondState}
+              >
+                {secondState}
+              </Button>
+            </Flex>
 
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+            {/* Change state to update Heading for the page */}
+            <Flex
+              maxW="60%"
+              mt="20"
+              align={"center"}
+              justify={"space-between"}
+              flexDir={"column"}
+            >
+              <Button onClick={changeHeader}>Change Header</Button>
+            </Flex>
+          </Flex>
+        </Box>
+      </Box>
     </>
   )
 }
